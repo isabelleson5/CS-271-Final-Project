@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class TreeNode(object):
-    def __init__(self, start, end, label=None, value=0, is_selected=False, branch=False):
+    def __init__(self, start, end, label="", value=0, is_selected=False, branch=False):
         """
         Initialize tree node
 
@@ -42,10 +42,10 @@ class TreeNode(object):
 
             if self.left.value > self.right.value:
                 self.value = self.left.value
-                self.label = "<-"
+                # self.label = "<-"
             else:
                 self.value = self.right.value
-                self.label = "->"
+                # self.label = "->"
 
     def query(self, start, end):
         ret = None
@@ -54,9 +54,9 @@ class TreeNode(object):
         else:
             mid = (self.start + self.end) // 2
             if end <= mid:
-                return self.left.query(start, end)
+                ret = self.left.query(start, end)
             elif start > mid:
-                return self.right.query(start, end)
+                ret = self.right.query(start, end)
             else:
                 left_max = self.left.query(start, mid)
                 right_max = self.right.query(mid + 1, end)
@@ -85,11 +85,11 @@ class TreeNode(object):
         x = self.inorder_pos
         plt.scatter([x], [y], 50, 'k')
         # line that applies label and value to node
-        s = "(" + ((str) (self.value)) + ") " + self.label
+        s = "(" + (str)(self.value) + ") " + self.label + " [" + (str)(self.start) + ":" + (str)(self.end) + "]"
         if self.is_selected:
-            plt.text(x+0.2, y, "{}".format(s),fontsize='small',weight='bold',backgroundcolor="#f7ff00")
+            plt.text(x+0.1, y, "{}".format(s),fontsize='x-small',weight='bold',backgroundcolor="#f7ff00")
         else:
-            plt.text(x+0.2, y, "{}".format(s),fontsize='small')
+            plt.text(x+0.1, y, "{}".format(s),fontsize='x-small')
         y_next = y-1
         if self.left:
             x_next = self.left.inorder_pos
@@ -156,10 +156,10 @@ class SegmentTree:
             root.right = self.build_tree(mid + 1, end)
             if root.left.value > root.right.value:
                 root.value = root.left.value
-                root.label = "<-"
+                # root.label = "<-"
             else:
                 root.value = root.right.value
-                root.label = "->"
+                # root.label = "->"
             root.branch = root.right.branch or root.left.branch
             ret = root
         return ret
@@ -217,18 +217,19 @@ if __name__ == "__main__":
     city_names = ["Intejersey","Binopolis","Pennsylstringia","Florida","North Charolina","Arrayzona","South Charolina","Dataware","North Dacode-a","Alascii"]
 
     # generate tree
-    tree = SegmentTree(light_levels, city_names, 5, 5)
+    # tree = SegmentTree(light_levels, city_names, 5, 5)
+    tree = SegmentTree(light_levels, city_names)
 
     # tree once built
     plt.figure(figsize=(20, 20))
     tree.draw()
     plt.show()
 
-    # update tree at index 5, replace value with 10
-    tree.update(5,10)
-    plt.figure(figsize=(20, 20))
-    tree.draw()
-    plt.show()
+    # # update tree at index 5, replace value with 10
+    # tree.update(5,10)
+    # plt.figure(figsize=(20, 20))
+    # tree.draw()
+    # plt.show()
 
     # query tree to find max value from 0 to 5 inclusive
     print(tree.query(0,5))
