@@ -217,19 +217,18 @@ if __name__ == "__main__":
     city_names = ["Intejersey","Binopolis","Pennsylstringia","Florida","North Charolina","Arrayzona","South Charolina","Dataware","North Dacode-a","Alascii"]
 
     # generate tree
-    # tree = SegmentTree(light_levels, city_names, 5, 5)
-    tree = SegmentTree(light_levels, city_names)
+    tree = SegmentTree(light_levels, city_names, 5, 5)
 
     # tree once built
     plt.figure(figsize=(20, 20))
     tree.draw()
     plt.show()
 
-    # # update tree at index 5, replace value with 10
-    # tree.update(5,10)
-    # plt.figure(figsize=(20, 20))
-    # tree.draw()
-    # plt.show()
+    # update tree at index 5, replace value with 10
+    tree.update(5,0)
+    plt.figure(figsize=(20, 20))
+    tree.draw()
+    plt.show()
 
     # query tree to find max value from 0 to 5 inclusive
     print(tree.query(0,5))
